@@ -1,0 +1,40 @@
+####### QUALITY CHECK ######
+
+##### CRAMINO ####
+
+cramino BAMAD025_merged_sorted.bam -t 33 >BAMAD025_cramino.txt
+cramino BOBIP013_merged_sorted.bam -t 34 >BOBIP013_cramino.txt
+cramino BAMAD022_merged_sorted.bam -t 35 >BAMAD022_cramino.txt
+cramino BOPAD012_merged_sorted.bam -t 32 >BOPAD012_cramino.txt
+cramino FIPAD025_merged_sorted.bam -t 32 >FIPAD025_cramino.txt
+cramino NABIP009_merged_sorted.bam -t 32 >NABIP009_cramino.txt
+cramino NAPAD001_merged_sorted.bam -t 32 >NAPAD001_cramino.txt
+cramino BOPAD013_merged_sorted.bam -t 32 >BOPAD013_cramino.txt
+cramino FIMAD025_merged_sorted.bam -t 32 >FIMAD025_cramino.txt
+cramino NAPAD020_merged_sorted.bam -t 32 >NAPAD020_cramino.txt
+cramino NAMAD020_merged_sorted.bam -t 32 >NAMAD020_cramino.txt
+cramino FIPAD054_merged_sorted.bam -t 32 >FIPAD054_cramino.txt
+cramino NAPAD021_merged_sorted.bam -t 32 >NAPAD021_cramino.txt
+cramino FIMAD053_merged_sorted.bam -t 32 >FIMAD053_cramino.txt
+cramino BASCF042_merged_sorted.bam -t 32 >BASCF042_cramino.txt
+
+#### and all others ###
+
+##### SOMALIER (for relatedness) #####
+
+ls */*.bam >MNESYS_bams
+
+SITES="sites.hg38.vcf.gz"                     # <-- your Somalier SNP sites (must match build/contigs)
+OUTDIR="extracted2"                       # where .somalier files go
+REF="/path/to/hg38/Homo_sapiens_assembly38.fasta"       # needed for CRAM; ignored>
+
+mkdir -p "$OUTDIR"
+
+while IFS= read -r f; do
+  base="$(basename "$f")"; sample="${base%%.*}"
+  SOMALIER_SAMPLE_NAME="$sample" \
+  somalier extract --sites "$SITES" -d "$OUTDIR" -f "$REF" "$f"
+done < MNESYS_bams
+
+
+
