@@ -25,7 +25,7 @@ cramino BASCF042_merged_sorted.bam -t 32 >BASCF042_cramino.txt
 ls */*.bam >MNESYS_bams
 
 SITES="sites.hg38.vcf.gz"                     # <-- your Somalier SNP sites (must match build/contigs)
-OUTDIR="extracted2"                       # where .somalier files go
+OUTDIR="extracted"                       # where .somalier files go
 REF="/path/to/hg38/Homo_sapiens_assembly38.fasta"       # needed for CRAM; ignored>
 
 mkdir -p "$OUTDIR"
@@ -36,5 +36,4 @@ while IFS= read -r f; do
   somalier extract --sites "$SITES" -d "$OUTDIR" -f "$REF" "$f"
 done < MNESYS_bams
 
-
-
+somalier relate --ped MNESYS.ped somalier/extracted/*.somalier
